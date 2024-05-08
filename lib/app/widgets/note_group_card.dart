@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:intl/intl.dart';
 class NoteGroupCard extends StatelessWidget {
-  const NoteGroupCard({super.key});
-
+  const NoteGroupCard({super.key, required this.groupId, this.gameName, this.gameCover, required this.content, required this.updatedAt});
+  final int groupId;
+  final String? gameName;
+  final String? gameCover;
+  final String content;
+  final DateTime updatedAt;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,20 +18,21 @@ class NoteGroupCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
+          Text(DateFormat('dd/MM/yyyy, HH:mm').format(updatedAt), style: context.textTheme.labelSmall?.copyWith(color: context.theme.colorScheme.secondary),),
+          if (gameName != null) Row(
             children: [
-              Padding(
+              if (gameCover != null) Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Image.network(
-                    "https://images.igdb.com/igdb/image/upload/t_logo_med/co1uje.jpg", height: 80,),
+                    gameCover!, height: 80,),
               ),
-              Padding(
+              if (gameName != null) Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("Zelda II: The Adventure of Link", style: context.textTheme.labelLarge,),
+                child: Text(gameName!, style: context.textTheme.labelLarge,),
               )
             ],
           ),
-          Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", maxLines: 3, overflow: TextOverflow.ellipsis, style: context.textTheme.bodySmall,),
+          Text(content, maxLines: 3, overflow: TextOverflow.ellipsis, style: context.textTheme.bodySmall,),
         ],
       ),
     );

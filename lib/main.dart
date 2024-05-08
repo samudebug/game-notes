@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:game_notes/app/note_group/note_group_binding.dart';
 import 'package:game_notes/app/note_group/note_group_view.dart';
+import 'package:game_notes/app/notes/notes_bindings.dart';
+import 'package:game_notes/app/notes/notes_view.dart';
 import 'package:get/get.dart';
 import './core/core.dart';
 
@@ -31,8 +33,12 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
             name: '/groups',
-            page: () => NoteGroupView(),
-            binding: NoteGroupBinding())
+            page: () => const NoteGroupView(),
+            binding: NoteGroupBinding()),
+        GetPage(
+            name: '/groups/:groupId/notes',
+            page: () => const NotesView(),
+            binding: NotesPageBinding())
       ],
     );
   }

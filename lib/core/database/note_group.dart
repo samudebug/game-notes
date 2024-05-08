@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:game_notes/core/database/note.dart';
 
 
 enum Status {
@@ -15,4 +16,11 @@ class NoteGroup extends Table {
   TextColumn get status => textEnum<Status>()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
+}
+
+class NoteGroupWithNotes {
+  final NoteGroup group;
+  final List<Note> notes;
+
+  NoteGroupWithNotes(this.group, this.notes);
 }
