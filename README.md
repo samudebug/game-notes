@@ -1,16 +1,32 @@
-# game_notes
+# Game Notes
 
-A new Flutter project.
+A simple and agile app to take notes about your backlog.
+It uses [IGDB](https://igdb.com) to fetch the games.
 
-## Getting Started
+### Built with:
+- [Flutter](https://flutter.dev/)
 
-This project is a starting point for a Flutter application.
+### Packages used:
+- [Getx](https://pub.dev/packages/get)
+- [Drift](https://pub.dev/packages/drift)
+- [Cached Network Image](https://pub.dev/packages/cached_network_image)
+- [Intl](https://pub.dev/packages/intl)
 
-A few resources to get you started if this is your first Flutter project:
+### Running the App
+You need to have Flutter installed. You can install it following the tutorials [here](https://docs.flutter.dev/get-started/install).
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Install dependencies using
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```sh
+flutter pub get
+```
+
+Follow the [Getting Started Guide](https://api-docs.igdb.com/#getting-started) from IGDB to get a client ID and a client secret, then create a .env file following the [example file](./env.example).
+
+Run the app using
+
+```sh
+flutter run
+```
+
+NOTE: I haven't tested it on all platforms, but as far as I know, it shouldn't have any problem.

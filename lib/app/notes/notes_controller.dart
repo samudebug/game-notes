@@ -86,6 +86,7 @@ class NotesPageController extends GetxController {
 
   Future<List<GameInfo>> searchGames(String query) async {
     log("Searching $query");
+    if (query.length < 3) return [];
     final searchResults = await gamesRepo.search(query: query);
     log("Search results ${searchResults.length}");
     return searchResults;
