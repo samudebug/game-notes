@@ -17,25 +17,30 @@ class NoteGroupView extends GetView<NoteGroupController> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Obx(() => ListView.builder(
-              itemBuilder: (context, index) {
-                final item = controller.noteGroups[index];
-                return InkWell(
-                  onTap: () => controller.openNotesPage(item.group.id),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: NoteGroupCard(
-                      groupId: item.group.id,
-                      content: item.note?.content ?? "No notes",
-                      updatedAt: item.group.updatedAt,
-                      gameName: item.game?.name,
-                      gameCover: item.game?.coverUrl,
+        child: Obx(() => controller.noteGroups.isEmpty
+            ? Center(
+                child: Text(
+                    "No notes taken yet. You can add more with the + button."),
+              )
+            : ListView.builder(
+                itemBuilder: (context, index) {
+                  final item = controller.noteGroups[index];
+                  return InkWell(
+                    onTap: () => controller.openNotesPage(item.group.id),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: NoteGroupCard(
+                        groupId: item.group.id,
+                        content: item.note?.content ?? "No notes",
+                        updatedAt: item.group.updatedAt,
+                        gameName: item.game?.name,
+                        gameCover: item.game?.coverUrl,
+                      ),
                     ),
-                  ),
-                );
-              },
-              itemCount: controller.noteGroups.length,
-            )),
+                  );
+                },
+                itemCount: controller.noteGroups.length,
+              )),
       ),
     );
   }

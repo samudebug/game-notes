@@ -663,16 +663,265 @@ class NoteCompanion extends UpdateCompanion<NoteData> {
   }
 }
 
+class $GameCacheTable extends GameCache
+    with TableInfo<$GameCacheTable, GameCacheData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GameCacheTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _gameIdMeta = const VerificationMeta('gameId');
+  @override
+  late final GeneratedColumn<int> gameId = GeneratedColumn<int>(
+      'game_id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _coverUrlMeta =
+      const VerificationMeta('coverUrl');
+  @override
+  late final GeneratedColumn<String> coverUrl = GeneratedColumn<String>(
+      'cover_url', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, gameId, name, coverUrl];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'game_cache';
+  @override
+  VerificationContext validateIntegrity(Insertable<GameCacheData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('game_id')) {
+      context.handle(_gameIdMeta,
+          gameId.isAcceptableOrUnknown(data['game_id']!, _gameIdMeta));
+    } else if (isInserting) {
+      context.missing(_gameIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('cover_url')) {
+      context.handle(_coverUrlMeta,
+          coverUrl.isAcceptableOrUnknown(data['cover_url']!, _coverUrlMeta));
+    } else if (isInserting) {
+      context.missing(_coverUrlMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  GameCacheData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GameCacheData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      gameId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}game_id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      coverUrl: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}cover_url'])!,
+    );
+  }
+
+  @override
+  $GameCacheTable createAlias(String alias) {
+    return $GameCacheTable(attachedDatabase, alias);
+  }
+}
+
+class GameCacheData extends DataClass implements Insertable<GameCacheData> {
+  final int id;
+  final int gameId;
+  final String name;
+  final String coverUrl;
+  const GameCacheData(
+      {required this.id,
+      required this.gameId,
+      required this.name,
+      required this.coverUrl});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['game_id'] = Variable<int>(gameId);
+    map['name'] = Variable<String>(name);
+    map['cover_url'] = Variable<String>(coverUrl);
+    return map;
+  }
+
+  GameCacheCompanion toCompanion(bool nullToAbsent) {
+    return GameCacheCompanion(
+      id: Value(id),
+      gameId: Value(gameId),
+      name: Value(name),
+      coverUrl: Value(coverUrl),
+    );
+  }
+
+  factory GameCacheData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return GameCacheData(
+      id: serializer.fromJson<int>(json['id']),
+      gameId: serializer.fromJson<int>(json['gameId']),
+      name: serializer.fromJson<String>(json['name']),
+      coverUrl: serializer.fromJson<String>(json['coverUrl']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'gameId': serializer.toJson<int>(gameId),
+      'name': serializer.toJson<String>(name),
+      'coverUrl': serializer.toJson<String>(coverUrl),
+    };
+  }
+
+  GameCacheData copyWith(
+          {int? id, int? gameId, String? name, String? coverUrl}) =>
+      GameCacheData(
+        id: id ?? this.id,
+        gameId: gameId ?? this.gameId,
+        name: name ?? this.name,
+        coverUrl: coverUrl ?? this.coverUrl,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('GameCacheData(')
+          ..write('id: $id, ')
+          ..write('gameId: $gameId, ')
+          ..write('name: $name, ')
+          ..write('coverUrl: $coverUrl')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, gameId, name, coverUrl);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GameCacheData &&
+          other.id == this.id &&
+          other.gameId == this.gameId &&
+          other.name == this.name &&
+          other.coverUrl == this.coverUrl);
+}
+
+class GameCacheCompanion extends UpdateCompanion<GameCacheData> {
+  final Value<int> id;
+  final Value<int> gameId;
+  final Value<String> name;
+  final Value<String> coverUrl;
+  const GameCacheCompanion({
+    this.id = const Value.absent(),
+    this.gameId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.coverUrl = const Value.absent(),
+  });
+  GameCacheCompanion.insert({
+    this.id = const Value.absent(),
+    required int gameId,
+    required String name,
+    required String coverUrl,
+  })  : gameId = Value(gameId),
+        name = Value(name),
+        coverUrl = Value(coverUrl);
+  static Insertable<GameCacheData> custom({
+    Expression<int>? id,
+    Expression<int>? gameId,
+    Expression<String>? name,
+    Expression<String>? coverUrl,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (gameId != null) 'game_id': gameId,
+      if (name != null) 'name': name,
+      if (coverUrl != null) 'cover_url': coverUrl,
+    });
+  }
+
+  GameCacheCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? gameId,
+      Value<String>? name,
+      Value<String>? coverUrl}) {
+    return GameCacheCompanion(
+      id: id ?? this.id,
+      gameId: gameId ?? this.gameId,
+      name: name ?? this.name,
+      coverUrl: coverUrl ?? this.coverUrl,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (gameId.present) {
+      map['game_id'] = Variable<int>(gameId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (coverUrl.present) {
+      map['cover_url'] = Variable<String>(coverUrl.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GameCacheCompanion(')
+          ..write('id: $id, ')
+          ..write('gameId: $gameId, ')
+          ..write('name: $name, ')
+          ..write('coverUrl: $coverUrl')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   _$AppDatabaseManager get managers => _$AppDatabaseManager(this);
   late final $NoteGroupTable noteGroup = $NoteGroupTable(this);
   late final $NoteTable note = $NoteTable(this);
+  late final $GameCacheTable gameCache = $GameCacheTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [noteGroup, note];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [noteGroup, note, gameCache];
 }
 
 typedef $$NoteGroupTableInsertCompanionBuilder = NoteGroupCompanion Function({
@@ -1005,10 +1254,131 @@ class $$NoteTableOrderingComposer
   }
 }
 
+typedef $$GameCacheTableInsertCompanionBuilder = GameCacheCompanion Function({
+  Value<int> id,
+  required int gameId,
+  required String name,
+  required String coverUrl,
+});
+typedef $$GameCacheTableUpdateCompanionBuilder = GameCacheCompanion Function({
+  Value<int> id,
+  Value<int> gameId,
+  Value<String> name,
+  Value<String> coverUrl,
+});
+
+class $$GameCacheTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $GameCacheTable,
+    GameCacheData,
+    $$GameCacheTableFilterComposer,
+    $$GameCacheTableOrderingComposer,
+    $$GameCacheTableProcessedTableManager,
+    $$GameCacheTableInsertCompanionBuilder,
+    $$GameCacheTableUpdateCompanionBuilder> {
+  $$GameCacheTableTableManager(_$AppDatabase db, $GameCacheTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$GameCacheTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$GameCacheTableOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$GameCacheTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<int> gameId = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> coverUrl = const Value.absent(),
+          }) =>
+              GameCacheCompanion(
+            id: id,
+            gameId: gameId,
+            name: name,
+            coverUrl: coverUrl,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            required int gameId,
+            required String name,
+            required String coverUrl,
+          }) =>
+              GameCacheCompanion.insert(
+            id: id,
+            gameId: gameId,
+            name: name,
+            coverUrl: coverUrl,
+          ),
+        ));
+}
+
+class $$GameCacheTableProcessedTableManager extends ProcessedTableManager<
+    _$AppDatabase,
+    $GameCacheTable,
+    GameCacheData,
+    $$GameCacheTableFilterComposer,
+    $$GameCacheTableOrderingComposer,
+    $$GameCacheTableProcessedTableManager,
+    $$GameCacheTableInsertCompanionBuilder,
+    $$GameCacheTableUpdateCompanionBuilder> {
+  $$GameCacheTableProcessedTableManager(super.$state);
+}
+
+class $$GameCacheTableFilterComposer
+    extends FilterComposer<_$AppDatabase, $GameCacheTable> {
+  $$GameCacheTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get gameId => $state.composableBuilder(
+      column: $state.table.gameId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get coverUrl => $state.composableBuilder(
+      column: $state.table.coverUrl,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$GameCacheTableOrderingComposer
+    extends OrderingComposer<_$AppDatabase, $GameCacheTable> {
+  $$GameCacheTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get gameId => $state.composableBuilder(
+      column: $state.table.gameId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get coverUrl => $state.composableBuilder(
+      column: $state.table.coverUrl,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
 class _$AppDatabaseManager {
   final _$AppDatabase _db;
   _$AppDatabaseManager(this._db);
   $$NoteGroupTableTableManager get noteGroup =>
       $$NoteGroupTableTableManager(_db, _db.noteGroup);
   $$NoteTableTableManager get note => $$NoteTableTableManager(_db, _db.note);
+  $$GameCacheTableTableManager get gameCache =>
+      $$GameCacheTableTableManager(_db, _db.gameCache);
 }
