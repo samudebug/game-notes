@@ -1,4 +1,4 @@
-package com.example.game_notes
+package com.samuel.game_notes
 
 import io.flutter.embedding.android.FlutterActivity
 

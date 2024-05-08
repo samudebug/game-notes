@@ -125,6 +125,7 @@ class NotesPageController extends GetxController {
       }
       startDateController.text = DateFormat("dd/MM/yyyy").format(date);
     }
+    saveDates();
   }
 
   addNote() async {
