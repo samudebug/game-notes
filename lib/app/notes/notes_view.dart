@@ -1,9 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:game_notes/app/notes/notes_controller.dart';
 import 'package:game_notes/app/widgets/note_card.dart';
 import 'package:game_notes/core/database/note_group.dart';
+import 'package:game_notes/core/repo/games_api/game_info.dart';
 import 'package:get/get.dart';
 
 class NotesView extends GetView<NotesPageController> {
@@ -22,11 +24,47 @@ class NotesView extends GetView<NotesPageController> {
           padding: EdgeInsets.all(8),
           child: Column(
             children: [
-              TextField(
-                style: context.textTheme.titleLarge,
-                decoration: InputDecoration(
-                    hintText: "Game Name", labelText: "Game Name"),
-              ),
+              Obx(() => Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      if (controller.group.value?.game != null)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Image.network(
+                            controller.group.value!.game!.coverUrl,
+                            height: 80,
+                          ),
+                        ),
+                      Expanded(
+                        child: TypeAheadField<GameInfo>(
+                          controller: controller.gameNameController,
+                          debounceDuration: Duration(milliseconds: 500),
+                          itemSeparatorBuilder: (context, index) => Divider(),
+                          suggestionsCallback: (search) async =>
+                              await controller.searchGames(search),
+                          builder: (context, controller, focusNode) {
+                            return TextField(
+                              controller: controller,
+                              style: context.textTheme.titleLarge,
+                              focusNode: focusNode,
+                              decoration: InputDecoration(
+                                  hintText: "Game Name",
+                                  labelText: "Game Name"),
+                            );
+                          },
+                          itemBuilder: (context, item) {
+                            return ListTile(
+                              leading: Image.network(item.coverUrl),
+                              title: Text(item.name),
+                            );
+                          },
+                          onSelected: (item) {
+                            controller.onGameSelected(item);
+                          },
+                        ),
+                      ),
+                    ],
+                  )),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Row(
@@ -49,7 +87,6 @@ class NotesView extends GetView<NotesPageController> {
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         child: DropdownMenu<Status>(
                           initialSelection: Status.playing,
-                          requestFocusOnTap: true,
                           label: Text("Status"),
                           dropdownMenuEntries: Status.values
                               .map<DropdownMenuEntry<Status>>((Status status) {

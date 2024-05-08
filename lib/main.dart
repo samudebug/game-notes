@@ -5,9 +5,11 @@ import 'package:game_notes/app/notes/notes_bindings.dart';
 import 'package:game_notes/app/notes/notes_view.dart';
 import 'package:get/get.dart';
 import './core/core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
   await init();
   runApp(const MyApp());
 }

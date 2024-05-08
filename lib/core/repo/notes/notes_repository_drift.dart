@@ -7,6 +7,9 @@ class NotesRepositoryDrift implements NotesRepository {
   final AppDatabase database;
   @override
   Future<NoteData> create({required int groupId}) async {
+    await (database.update(database.noteGroup)
+          ..where((tbl) => tbl.id.equals(groupId)))
+        .write(NoteGroupCompanion(updatedAt: Value(DateTime.now())));
     return await database.into(database.note).insertReturning(
         NoteCompanion.insert(
             content: "",
@@ -46,11 +49,11 @@ class NotesRepositoryDrift implements NotesRepository {
   }
 
   @override
-  Future<NoteData> getFirst({required int groupId}) async {
+  Future<NoteData?> getFirst({required int groupId}) async {
     return (await (database.select(database.note)
               ..where((tbl) => tbl.groupId.equals(groupId))
               ..orderBy([(t) => OrderingTerm.asc(t.createdAt)]))
             .get())
-        .first;
+        .firstOrNull;
   }
 }
