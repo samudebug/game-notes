@@ -30,3 +30,10 @@ flutter run
 ```
 
 NOTE: I haven't tested it on all platforms, but as far as I know, it shouldn't have any problem.
+
+### Screenshots
+<div style="display: flex; flex-direction: row;">
+  <img src="https://github.com/samudebug/game-notes/assets/34324655/53a31233-0381-4a3d-9464-a52e86042489" height="400" />
+  <img src="https://github.com/samudebug/game-notes/assets/34324655/e33a366d-2505-47de-95a0-f94c3077ad1b" height="400" />
+  <img src="https://github.com/samudebug/game-notes/assets/34324655/1b7f3c85-9096-47e7-93ee-1e629bd76944" height="400" />
+</div>
