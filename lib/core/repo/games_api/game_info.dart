@@ -10,8 +10,9 @@ class GameInfo {
   GameInfo.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         name = json['name'],
-        coverUrl =
-            'https://images.igdb.com/igdb/image/upload/t_logo_med/${json['cover']['image_id']}.jpg';
+        coverUrl = json['cover'] != null
+            ? 'https://images.igdb.com/igdb/image/upload/t_logo_med/${json['cover']?['image_id'] ?? ""}.jpg'
+            : '';
   GameInfo.fromGameCacheData(GameCacheData data)
       : id = data.gameId,
         name = data.name,

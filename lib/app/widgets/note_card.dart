@@ -96,8 +96,17 @@ class _NoteCardState extends State<NoteCard> {
           if (widget.isFocused) Divider(),
           if (widget.isFocused)
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                ElevatedButton(
+                    onPressed: () {
+                      widget.onDelete(widget.id);
+                    },
+                    child: Text("Delete"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: context.theme.colorScheme.errorContainer,
+                      foregroundColor: context.theme.colorScheme.onErrorContainer
+                    ),),
                 ElevatedButton(
                     onPressed: () {
                       _node.unfocus();

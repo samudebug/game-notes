@@ -35,6 +35,7 @@ class NoteGroupView extends GetView<NoteGroupController> {
                         updatedAt: item.group.updatedAt,
                         gameName: item.game?.name,
                         gameCover: item.game?.coverUrl,
+                        onDelete: (id) => controller.onDeleteGroup(id),
                       ),
                     ),
                   );

@@ -32,15 +32,24 @@ class NotesView extends GetView<NotesPageController> {
                       if (controller.group.value?.game != null)
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: CachedNetworkImage(imageUrl: controller.group.value!.game!.coverUrl, height: 80,),
+                          child: CachedNetworkImage(
+                            imageUrl: controller.group.value!.game!.coverUrl,
+                            height: 80,
+                          ),
                         ),
                       Expanded(
                         child: TypeAheadField<GameInfo>(
                           controller: controller.gameNameController,
                           debounceDuration: Duration(milliseconds: 500),
+                          hideOnEmpty: true,
+                          hideOnUnfocus: true,
+                          suggestionsController:
+                              controller.suggestionsController,
+                          focusNode: controller.gameNameFocusNode,
                           itemSeparatorBuilder: (context, index) => Divider(),
-                          suggestionsCallback: (search) async =>
-                              await controller.searchGames(search),
+                          suggestionsCallback: (search) async {
+                            return await controller.searchGames(search);
+                          },
                           builder: (context, controller, focusNode) {
                             return TextField(
                               controller: controller,

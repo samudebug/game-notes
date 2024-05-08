@@ -10,12 +10,14 @@ class NoteGroupCard extends StatelessWidget {
       this.gameName,
       this.gameCover,
       required this.content,
-      required this.updatedAt});
+      required this.updatedAt,
+      required this.onDelete});
   final int groupId;
   final String? gameName;
   final String? gameCover;
   final String content;
   final DateTime updatedAt;
+  final void Function(int id) onDelete;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,10 +28,18 @@ class NoteGroupCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            DateFormat('dd/MM/yyyy, HH:mm').format(updatedAt),
-            style: context.textTheme.labelSmall
-                ?.copyWith(color: context.theme.colorScheme.secondary),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                DateFormat('dd/MM/yyyy, HH:mm').format(updatedAt),
+                style: context.textTheme.labelSmall
+                    ?.copyWith(color: context.theme.colorScheme.secondary),
+              ),
+              IconButton(onPressed: () {
+                onDelete(groupId);
+              }, icon: Icon(Icons.delete), color: context.theme.colorScheme.error, iconSize: 18,)
+            ],
           ),
           if (gameName != null)
             Row(

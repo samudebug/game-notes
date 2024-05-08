@@ -47,4 +47,8 @@ class NoteGroupController extends GetxController {
     }
     Get.toNamed('/groups/$id/notes');
   }
+
+  onDeleteGroup(int id) {
+    repo.delete(id: id);
+  }
 }

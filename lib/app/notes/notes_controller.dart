@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:game_notes/core/database/database.dart';
 import 'package:game_notes/core/database/note_group.dart';
 import 'package:game_notes/core/models/debouncer.dart';
@@ -34,6 +35,8 @@ class NotesPageController extends GetxController {
   final endDateController = TextEditingController();
   final startDateFocusNode = FocusNode();
   final endDateFocusNode = FocusNode();
+  final gameNameFocusNode = FocusNode();
+  final suggestionsController = SuggestionsController<GameInfo>();
   NotesPageController() {
     final groupId = Get.parameters['groupId'];
     if (groupId == null) throw ("Group ID not set!!");
@@ -62,6 +65,11 @@ class NotesPageController extends GetxController {
     endDateFocusNode.addListener(() {
       onFocusChanged(endDateFocusNode.hasFocus);
     });
+    gameNameFocusNode.addListener(() { 
+      if (gameNameFocusNode.hasFocus) {
+        suggestionsController.refresh();
+      }
+    });
   }
 
   @override
@@ -71,6 +79,7 @@ class NotesPageController extends GetxController {
     gameNameController.dispose();
     startDateFocusNode.dispose();
     endDateFocusNode.dispose();
+    gameNameFocusNode.dispose();
     super.dispose();
   }
 
@@ -85,6 +94,7 @@ class NotesPageController extends GetxController {
   }
 
   Future<List<GameInfo>> searchGames(String query) async {
+    
     log("Searching $query");
     if (query.length < 3) return [];
     final searchResults = await gamesRepo.search(query: query);
@@ -97,6 +107,7 @@ class NotesPageController extends GetxController {
         id: group.value!.group.id, gameId: game.id.toString());
     await gameService.saveOnCache(game);
     gameNameController.text = game.name;
+    suggestionsController.close();
   }
 
   void onStatusSelected(Status? status) {
